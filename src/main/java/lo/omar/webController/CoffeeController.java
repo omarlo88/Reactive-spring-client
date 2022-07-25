@@ -22,7 +22,7 @@ public class CoffeeController {
 
     //private WebClient client = WebClient.create("localhost:8080/coffee");
     //private WebClient client = WebClient.create();
-    private WebClient client;
+    private final WebClient client;
 
     public CoffeeController(WebClient.Builder builder) {
         this.client = builder.baseUrl("http://localhost:8080/api/coffees")
@@ -45,7 +45,7 @@ public class CoffeeController {
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(() -> new CoffeeException("404 n'existe pas!!")))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(() -> new CoffeeException("505 server exception!!")))
                 .bodyToFlux(Coffee.class)
-                //.exchange()
+                //.exchange() Deprecated
                 //.flatMapMany(clientResponse -> clientResponse.bodyToFlux(Coffee.class))
                 //.filter(coffee -> coffee.getCoffeeName().equalsIgnoreCase("Jet Black Mongo"))
                 .doOnNext(System.out::println)
